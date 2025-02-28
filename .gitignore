@@ -1,0 +1,8 @@
+build
+*.lck
+*.zip
+_autosave*
+.DS_Store
+fp-info-cache
+shake-backups
+.idea

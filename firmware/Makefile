@@ -4,9 +4,8 @@ OUT = build
 
 export OBJ
 OBJ += $(OUT)/main.o
-OBJ += $(OUT)/led.o
+OBJ += $(OUT)/pwm.o
 OBJ += $(OUT)/pot.o
-OBJ += $(OUT)/em.o
 
 CC = msp430-gcc
 CFLAGS = -g -mmcu=msp430g2553
@@ -32,21 +31,17 @@ build: $(OUT)/firmware.elf
 	@echo "SUCCESSFUL"
 
 $(OUT)/firmware.elf: | build-dir $(OBJ)
-	@echo "Link firmware elf";\
+	@echo "Link firmware";\
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) -o $(OUT)/firmware.elf
 
 $(OUT)/main.o: $(SOURCES)/main.c $(HEADERS)/*.h
 	@echo "Compile $<";\
 	$(CC) $(CFLAGS) $(INCFLAGS) -c $(SOURCES)/main.c -o $(OUT)/main.o
 
-$(OUT)/led.o: $(SOURCES)/led.c $(HEADERS)/led.h
+$(OUT)/pwm.o: $(SOURCES)/pwm.c $(HEADERS)/pwm.h
 	@echo "Compile $<";\
-	$(CC) $(CFLAGS) $(INCFLAGS) -c $(SOURCES)/led.c -o $(OUT)/led.o
+	$(CC) $(CFLAGS) $(INCFLAGS) -c $(SOURCES)/pwm.c -o $(OUT)/pwm.o
 
-$(OUT)/em.o: $(SOURCES)/em.c $(HEADERS)/em.h
-	@echo "Compile $<";\
-	$(CC) $(CFLAGS) $(INCFLAGS) -c $(SOURCES)/em.c -o $(OUT)/em.o
-	
 $(OUT)/pot.o: $(SOURCES)/pot.c $(HEADERS)/pot.h
 	@echo "Compile $<";\
 	$(CC) $(CFLAGS) $(INCFLAGS) -c $(SOURCES)/pot.c -o $(OUT)/pot.o

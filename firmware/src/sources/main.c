@@ -1,7 +1,9 @@
 #include <msp430g2553.h>
-#include "em.h"
-#include "led.h"
+#include "pwm.h"
 #include "pot.h"
+
+#define FREQ_BASE	80
+#define FREQ_DIFF	20
 
 // initialization
 void configure() {
@@ -19,19 +21,17 @@ void configure() {
 int main(void) {
 	// config
 	configure();
-	configure_led();
+	configure_pwm();
 	configure_pot();
-	//configure_magnet();
 	// set up
-	set_led_frequency(5);
-	//set_magnet_frequency(80);
+	set_led_frequency(FREQ_BASE);
+	set_magnet_frequency(FREQ_BASE + FREQ_DIFF);
 	// low power mode + enable interruptions
 	_BIS_SR(LPM0_bits + GIE);
 }
 
-void event_pot_value(float value) {
-	// todo:
-	//	- read pot value
-	// 	- calculate frequency beat
-	// 	- shift led frequency
+void on_pot_sample(float value) {
+	float step = FREQ_DIFF * value;
+	float freq = FREQ_BASE + step;
+	//set_led_frequency(freq);
 }
